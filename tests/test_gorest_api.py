@@ -13,7 +13,7 @@ def test_get_users(api_config):
     assert isinstance(response.json(), list)
 
 
-def test_create_user(api_config):
+def test_create_and_update_user(api_config):
     """Test creating a new user with authentication - gorest.co.in"""
     url = f"{api_config['base_url']}/users"
     headers = {
@@ -32,3 +32,19 @@ def test_create_user(api_config):
     data = response.json()
     assert data["name"] == "John Doe"
     assert data["email"] == email
+
+    user_id = data['id']
+    # update user
+    update_payload = {
+        "name": "John Doe Updated",
+        "email": email,
+        "status": "inactive"
+    }
+    update_response = requests.put(f"{api_config['base_url']}/users/{user_id}", json=update_payload, headers=headers)
+
+    # Validate response
+    assert update_response.status_code == 200  # Ensure update was successful
+    updated_data = update_response.json()
+    assert updated_data["id"] == user_id
+    assert updated_data["name"] == "John Doe Updated"
+    assert updated_data["status"] == "inactive"
