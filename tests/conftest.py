@@ -53,7 +53,6 @@ def mock_api():
             json={"error": "Invalid credentials"},
             status_code=401
         )
-
         yield mock  # Provide the mock instance
 
 
@@ -74,15 +73,33 @@ def load_user_data():
         data = json.load(file)
     return data["users"]  # Return list of users
 
+
+# Load user test data at module level (before test execution)
+def load_user_test_data():
+    """Loads test data from JSON file before pytest runs."""
+    file_path = os.path.join(os.path.dirname(__file__), "..", "config", "user_test_data.json")
+    with open(file_path, "r") as file:
+        return json.load(file)
+
+
 # Pytest fixture (not used for parameterization)
 @pytest.fixture
 def user_json_data():
     """Returns JSON test data."""
     return load_user_data()
 
+
+@pytest.fixture(scope="session")
+def user_test_data():
+    """Provides test data for tests."""
+    return load_user_test_data()
+
+
 # Parameterizing the test dynamically
 def pytest_generate_tests(metafunc):
-    """Dynamically parameterize tests with JSON user data."""
+    """Dynamically injects test cases into parameterized tests."""
+    if "user_test_data" in metafunc.fixturenames:
+        metafunc.parametrize("user_test_data", load_user_test_data())
     if "user_json_data" in metafunc.fixturenames:
         metafunc.parametrize("user_json_data", load_user_data())
 

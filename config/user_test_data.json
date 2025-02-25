@@ -1,0 +1,5 @@
+[
+    {"name": "Alice Smith", "gender": "female", "status": "active"},
+    {"name": "Bob Johnson", "gender": "male", "status": "inactive"},
+    {"name": "Charlie Doe", "gender": "male", "status": "active"}
+]
