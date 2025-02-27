@@ -37,22 +37,40 @@ def logger(request):
 def mock_api():
     """Mocks API responses using requests-mock."""
     with requests_mock.Mocker() as mock:
-        # Mock login API response
-        mock.post(
+        def match_login_request(request):
+            """Custom matcher to check if request JSON contains required fields."""
+            try:
+                json_data = request.json()
+                return (
+                    isinstance(json_data, dict) and
+                    json_data.get("username") == "test" and
+                    json_data.get("password") == "pass"
+                )
+            except:
+                return False
+
+        # Mock login API response (handling port 443 explicitly)
+        for login_url in [
             "https://api.example.com/auth/login",
-            additional_matcher=lambda request: request.json() == {"username": "test", "password": "pass"},
-            json={"token": "fake_token"},
-            status_code=200
-        )
+            "https://api.example.com:443/auth/login"  # Include port 443 variation
+        ]:
+            mock.post(
+                login_url,
+                additional_matcher=match_login_request,
+                json={"token": "fake_token"},
+                status_code=200
+            )
+
         # Mock user info API response
         mock.get("https://api.example.com/users/1", json={"id": 1, "name": "Test User"}, status_code=200)
 
-        # Add a default response for incorrect credentials
+        # Default response for incorrect credentials
         mock.post(
             "https://api.example.com/auth/login",
             json={"error": "Invalid credentials"},
             status_code=401
         )
+
         yield mock  # Provide the mock instance
 
 

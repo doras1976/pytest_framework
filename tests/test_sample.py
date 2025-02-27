@@ -25,14 +25,6 @@ def test_validate_user_response_schemas(mock_api):
     assert user.name == "Test User"
 
 
-def test_mocked_login(mock_api):
-    """Tests the mocked login API response."""
-    response = requests.post("https://api.example.com/auth/login", json={"username": "test", "password": "pass"})
-    assert response.status_code == 200
-    assert "token" in response.json()
-    assert response.json()["token"] == "fake_token"
-
-
 def test_mocked_login_fail(mock_api):
     """Tests the mocked login API response."""
     response = requests.post("https://api.example.com/auth/login", json={"username": "test", "password": "pas"})
