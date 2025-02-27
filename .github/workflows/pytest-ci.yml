@@ -32,6 +32,7 @@ jobs:
       - name: Run API Tests with Pytest
         run: |
           source venv/bin/activate
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest --html=reports/test_report.html --self-contained-html
 
       - name: Upload Test Report
