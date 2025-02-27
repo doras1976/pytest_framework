@@ -1,5 +1,4 @@
 {
-    "_base_url": "https://jsonplaceholder.typicode.com",
     "base_url": "https://gorest.co.in/public/v2",
     "access_token": "3a560aa48e8ac0f6707029685839eb280b5bb339947ebf6a1ce85bfb9b0d086c"
 }

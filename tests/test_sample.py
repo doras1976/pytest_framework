@@ -1,46 +1,9 @@
 import logging
 import requests
 from jsonschema import validate
-
 from schemas.schemas import UserSchema, USER_SCHEMA
 
 import requests
-
-
-def test_get_user(api_config):
-    """Test fetching a real user from the API."""
-    url = f"{api_config['base_url']}/users/1"
-    response = requests.get(url)
-
-    assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["id"] == 1
-    assert "name" in data
-
-
-def test_get_post(api_config):
-    """Test fetching a post from API"""
-    url = f"{api_config['base_url']}/posts/1"
-    response = requests.get(url)
-    assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["id"] == 1
-    assert "title" in data
-
-
-def test_create_post(api_config):
-    """Test sending a POST request to create a blog post - jsonplaceholder."""
-    url = f"{api_config['base_url']}/posts"
-    payload = {"title": "Test Post", "body": "This is a test.", "userId": 1}
-    headers = {"Content-Type": "application/json"}
-
-    response = requests.post(url, json=payload, headers=headers)
-
-    assert response.status_code == 201  # 201 Created
-    data = response.json()
-    assert "id" in data  # API assigns an ID
 
 
 def test_validate_user_response_json(mock_api):

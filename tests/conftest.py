@@ -12,7 +12,7 @@ def api_config():
     file_path = os.path.join(os.path.dirname(__file__), "..", "config", "api_config.json")
     with open(file_path, "r") as file:
         data = json.load(file)
-    return data  # Returns {"base_url": "https://jsonplaceholder.typicode.com"}
+    return data
 
 
 # Ensure logs directory exists
