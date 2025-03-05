@@ -26,6 +26,7 @@ pipeline {
             steps {
                 sh '''
                     source venv/bin/activate
+                    export PYTHONPATH=$PYTHONPATH:$(pwd)  # Ensure Python finds schemas
                     pytest --html=reports/test_report.html --self-contained-html
                 '''
             }
